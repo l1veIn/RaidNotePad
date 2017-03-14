@@ -1,0 +1,61 @@
+
+<!--index.wxml-->
+
+<view class="header" >
+<icon type="search"/>
+<input class="searchInput" placeholder="输入关键字搜索" placeholder-class="placeholder" bindinput="bindSearchInput" value=""/>
+</view>
+
+<view class="container" wx:if="{{items.length == 0 }}">
+  <view  bindtap="bindViewTap" class="userinfo">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname">Hello! {{userInfo.nickName}}</text>
+  </view>
+</view>
+
+
+<view class="noroles" wx:if="{{items.length == 0 }}">你还没有角色数据！快去添加吧！</view>
+
+<view >
+<view wx:if="{{items.length>0}}" class="container1"></view>
+  <view class="touch-item {{item.isTouchMove ? 'touch-move-active' : ''}}" data-index="{{index}}" bindtouchstart="touchstart" bindtouchmove="touchmove" wx:for="{{items}}" wx:key="" hidden="{{!item.isShow}}">
+    <view class="content" data-index="{{index}}" catchlongtap="del" >
+      <image src="{{item.gameicon}}" class="img"></image>
+      <view class="gameid"><text>{{item.gameid}}</text></view> 
+      <view class="{{item.dailytag<1&&item.tag<3 ? 'tag' : 'fulltag'}}">{{item.dailytag}}/1</view> 
+      <view class="{{item.tag<3 ? 'tag' : 'fulltag'}}">{{item.tag}}/3</view> 
+      <!--<view class="fulltag" wx:else>{{item.tag}}/3</view> -->
+    </view>
+    <view class="complete" catchtap="complete" data-index="{{index}}">完成通关</view>
+  </view>
+
+  <view class="counter">今日共计通关次数：{{counter}} 次</view>
+  <view class="addbox">
+    <view class="picker">
+      <span>请选择职业：</span> 
+      <view>
+        <picker bindchange="bindPickerChange1" value="{{arrayIndex1}}" range="{{array1}}">
+          {{array1[arrayIndex1]}}
+        </picker>
+      </view>
+      <view>
+        <picker bindchange="bindPickerChange2" value="{{arrayIndex2}}" range="{{array2}}" wx:if="{{array2[arrayIndex2]}}">
+          {{array2[arrayIndex2]}}
+        </picker>
+      </view>
+    </view>
+    <view class="idInput">
+      <label>角色名：</label>
+      <input class="inputbox" placeholder="请输入角色名或代号" placeholder-class="placeholder" bindinput="bindKeyInput" value="{{gameId}}" />
+    </view>
+
+  </view>
+      <view class="adder">
+    <button catchtap="adder" type="primary" >+ 添加一个角色</button>
+  </view>
+  <view class="reset">
+    <button catchtap="showTotalCounter" >查看历史通关次数</button>
+  </view>
+  <navigator  class="rules" url="/pages/Disclaimer/Disclaimer" hover-class="navigator-hover">免责声明</navigator >
+
+</view>
