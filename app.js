@@ -5,6 +5,10 @@ App({
     var logs = wx.getStorageSync('logs') || [];
     //每天早上6点作为新的一天
     logs.unshift(new Date(Date.now()-6*60*60*1000).toLocaleString().split(" ")[0]);
+    if(logs.length>10){
+      logs.pop();
+    }
+    
     wx.setStorageSync('logs', logs);
    //如果昨天和今天不是一天，那么重置今日灭杀次数
     if (logs[0]&&logs[1]&&logs[0]!==logs[1]){
