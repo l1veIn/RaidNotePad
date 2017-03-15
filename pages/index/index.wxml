@@ -53,9 +53,11 @@
       <view class="adder">
     <button catchtap="adder" type="primary" >+ 添加一个角色</button>
   </view>
-  <view class="reset">
-    <button catchtap="showTotalCounter" >查看历史通关次数</button>
-  </view>
-  <navigator  class="rules" url="/pages/Disclaimer/Disclaimer" hover-class="navigator-hover">免责声明</navigator >
-
+  <!--<view class="reset">
+    <button catchtap="testtest" >test</button>
+  </view>-->
+  <view class="rules">
+  <text  catchtap="showTotalCounter" >查看历史通关次数</text>
+  <navigator   url="/pages/Disclaimer/Disclaimer" hover-class="navigator-hover">免责声明</navigator >
+</view>
 </view>

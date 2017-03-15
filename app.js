@@ -19,7 +19,7 @@ App({
       wx.setStorageSync('mylogs', mylogs);
     };
     //如果昨天和今天不是一天，并且今天是星期三，那么重置全部灭杀次数
-    if (logs[0]&&logs[1]&&logs[0]!==logs[1]&&new Date(Date.now()-6*60*60*1000).getday===3){
+    if (logs[0]&&logs[1]&&logs[0]!==logs[1]&&Date().split(" ")[0]==='Wed'){
       var items = wx.getStorageSync('storage') || [];
        for (var item of items) {
             item.tag = 0

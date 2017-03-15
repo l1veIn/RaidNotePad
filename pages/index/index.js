@@ -200,20 +200,81 @@ Page({
   },
   //删除角色
   del: function (e) {
+
     let that = this;
-    wx.showModal({
-      title: '确定删除该角色吗？',
-      content: '删除后无法恢复',
-      success: function (res) {
-        if (res.confirm) {
-          that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid });
-          that.data.items.splice(e.currentTarget.dataset.index, 1);
+    let functions = [];
+    functions[0] = function () {
+      console.log(0);
+        wx.showModal({
+        title: '确定重置通今日关次数吗？',
+        // content: '重置后无法恢复',
+        success: function (res) {
+          if (res.confirm) {
+            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置今日通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid });
+            that.data.items[e.currentTarget.dataset.index].dailytag=0;
+            that.save();
 
-          that.save();
-
+          }
         }
+      })
+    };
+    functions[1] = function () {
+      console.log(1);
+      wx.showModal({
+        title: '确定重置本周通关次数吗？',
+        // content: '重置后无法恢复',
+        success: function (res) {
+          if (res.confirm) {
+            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置周通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid });
+            that.data.items[e.currentTarget.dataset.index].tag=0;
+            that.save();
+
+          }
+        }
+      })
+    };
+    functions[2] = function () {
+      console.log(2);
+      wx.showModal({
+        title: '确定删除该角色吗？',
+        content: '删除后无法恢复',
+        success: function (res) {
+          if (res.confirm) {
+            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid });
+            that.data.items.splice(e.currentTarget.dataset.index, 1);
+
+            that.save();
+
+          }
+        }
+      })
+    };
+    wx.showActionSheet({
+      itemList: ['重置今日通关次数', '重置本周通关次数', '删除角色'],
+      success: function (res) {
+        // console.log(res.tapIndex)
+        if (res.tapIndex >= 0)
+        functions[res.tapIndex]();
+      },
+      fail: function (res) {
+        console.log(res.errMsg)
       }
     })
+
+    // let that = this;
+    // wx.showModal({
+    //   title: '确定删除该角色吗？',
+    //   content: '删除后无法恢复',
+    //   success: function (res) {
+    //     if (res.confirm) {
+    //       that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid });
+    //       that.data.items.splice(e.currentTarget.dataset.index, 1);
+
+    //       that.save();
+
+    //     }
+    //   }
+    // })
   },
   //按照tag排序
   sort: function () {
@@ -287,11 +348,29 @@ Page({
       items: items
     })
   },
-  //判断search
-  istrue: function () {
-    console.log(1);
-    return true;
-  }
+  //test
+  // testtest: function () {
+  //   let that = this;
+  //   let functions = [];
+  //   functions[0] = function () {
+  //     console.log(0);
+  //   };
+  //   functions[1] = function () {
+  //     console.log(1);
+  //   };
+  //   functions[2] = function () {
+  //     console.log(2);
+  //   };
+  //   wx.showActionSheet({
+  //     itemList: ['重置今日通关次数', '重置本周通关次数', '删除角色'],
+  //     success: function (res) {
+  //       functions[res.tapIndex]();
+  //     },
+  //     fail: function (res) {
+  //       console.log(res.errMsg)
+  //     }
+  //   })
+  // }
 
 
 })

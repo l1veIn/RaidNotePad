@@ -175,9 +175,9 @@ display: flex;
   box-shadow: 1px 1px 5px lightgrey;
 }
 .rules{
-  margin-left:80% ;
-
-  margin-right:auto;
+  display: flex;
+  margin: 10px;
+  justify-content:space-between;
   font-size: small;
   color: grey
 }
