@@ -20,6 +20,7 @@ Page({
       '神枪手': ['掠天之翼', '毁灭者', '机械元首', '战场统治者'],
       '格斗家': ['念帝', '极武圣', '毒神绝', '风暴女皇'],
       '魔法师': ['元素圣灵', '月蚀', '伊斯塔战灵', '古灵精怪'],
+
       '圣职者': ['神思者', '正义仲裁者', '真龙星君', '永生者'],
       '暗夜使者': ['月影星劫', '亡魂主宰', '不知火', '幽冥'],
       '神枪手(女)': ['绯红玫瑰', '风暴骑兵', '机械之灵', '芙蕾雅'],
@@ -205,14 +206,22 @@ Page({
     let functions = [];
     functions[0] = function () {
       console.log(0);
-        wx.showModal({
+      wx.showModal({
         title: '确定重置通今日关次数吗？',
         // content: '重置后无法恢复',
         success: function (res) {
           if (res.confirm) {
             that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置今日通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid });
-            that.data.items[e.currentTarget.dataset.index].dailytag=0;
+            that.data.items[e.currentTarget.dataset.index].dailytag = 0;
             that.save();
+            //每日通关次数-1
+            that.setData({
+              counter: --that.data.counter
+            });
+            wx.setStorageSync('counter', that.data.counter);
+            //历史通关次数-1
+            let totalCounter = wx.getStorageSync('totalCounter') || 0;
+            wx.setStorageSync('totalCounter', --totalCounter);
 
           }
         }
@@ -226,7 +235,18 @@ Page({
         success: function (res) {
           if (res.confirm) {
             that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置周通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid });
-            that.data.items[e.currentTarget.dataset.index].tag=0;
+
+            // //每日通关次数-tag
+            // that.setData({
+            //   counter: that.data.counter-that.data.items[e.currentTarget.dataset.index].tag
+            // });
+            // wx.setStorageSync('counter', that.data.counter);
+            // //历史通关次数-tag
+            // let totalCounter = wx.getStorageSync('totalCounter') || 0;
+            // wx.setStorageSync('totalCounter', totalCounter-that.data.items[e.currentTarget.dataset.index].tag);
+
+
+            that.data.items[e.currentTarget.dataset.index].tag = 0;
             that.save();
 
           }
@@ -254,7 +274,7 @@ Page({
       success: function (res) {
         // console.log(res.tapIndex)
         if (res.tapIndex >= 0)
-        functions[res.tapIndex]();
+          functions[res.tapIndex]();
       },
       fail: function (res) {
         console.log(res.errMsg)
@@ -318,19 +338,26 @@ Page({
   //picker方法
   bindPickerChange1: function (e) {
     let that = this;
+    //  console.log(e.detail.value);
     that.setData({
       arrayIndex1: e.detail.value,
       arrayIndex2: 0,
       array2: that.data.roles[`${that.data.array1[e.detail.value]}`],
-      role: that.data.roles[`${that.data.array1[e.detail.value]}`][0]
+      role: e.detail.value.toString() + '0'
     });
   },
   bindPickerChange2: function (e) {
     let that = this;
+    //  console.log(e.detail.value.toString());
     that.setData({
       arrayIndex2: e.detail.value,
-      role: that.data.array2[e.detail.value]
+      role: that.data.arrayIndex1.toString() + e.detail.value.toString()
     });
+    console.log(that.data.role)
+    // that.setData({
+    //   arrayIndex2: e.detail.value,
+    //   role: that.data.array2[e.detail.value]
+    // });
   },
   //获取search输入
   bindSearchInput: function (e) {

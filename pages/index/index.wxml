@@ -6,6 +6,8 @@
 <input class="searchInput" placeholder="输入关键字搜索" placeholder-class="placeholder" bindinput="bindSearchInput" value=""/>
 </view>
 
+
+
 <view class="container" wx:if="{{items.length == 0 }}">
   <view  bindtap="bindViewTap" class="userinfo">
     <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
@@ -24,7 +26,7 @@
       <view class="gameid"><text>{{item.gameid}}</text></view> 
       <view class="{{item.dailytag<1&&item.tag<3 ? 'tag' : 'fulltag'}}">{{item.dailytag}}/1</view> 
       <view class="{{item.tag<3 ? 'tag' : 'fulltag'}}">{{item.tag}}/3</view> 
-      <!--<view class="fulltag" wx:else>{{item.tag}}/3</view> -->
+  
     </view>
     <view class="complete" catchtap="complete" data-index="{{index}}">完成通关</view>
   </view>
