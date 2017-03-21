@@ -1,5 +1,5 @@
 //index.js
-var app = getApp()
+var app = getApp();
 Page({
   data: {
     userInfo: {},
@@ -42,6 +42,7 @@ Page({
         userInfo: userInfo
       })
     })
+    // console.log(that.data.userInfo)
     var storage = wx.getStorageSync('storage') || [];
     var mylogs = wx.getStorageSync('mylogs') || [];
     var counter = wx.getStorageSync('counter') || 0;
@@ -50,6 +51,23 @@ Page({
       mylogs: mylogs,
       counter: counter
     })
+  },
+  onReady:function(){
+    if(app.updateModal.isShow){
+        wx.showModal({
+        title: '提示',
+        content: '版本已更新，请查看日志',
+        showCancel: false,
+        complete : function(){
+        // wx.navigateBack({
+        //   delta: 1, // 回退前 delta(默认为1) 页面
+        // })
+        // app.updateModal.isShow=false
+     
+        }
+      })
+    }
+    // 页面渲染完成
   },
   bindViewTap: function () {
     wx.navigateTo({
@@ -128,7 +146,7 @@ Page({
       let totalCounter = wx.getStorageSync('totalCounter') || 0;
       wx.setStorageSync('totalCounter', ++totalCounter);
       //日志+1
-      this.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '完成通关', name: this.data.items[e.currentTarget.dataset.index].gameid });
+      this.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '完成通关', name: this.data.items[e.currentTarget.dataset.index].gameid, isShow: true ,byUser:0});
       this.sort();
       this.save()
     } else {
@@ -162,7 +180,15 @@ Page({
         showCancel: false,
 
       })
-    } else {
+    } 
+    else if(that.data.gameId.length>10){
+       wx.showModal({
+        title: '提示',
+        content: '角色名太长啦',
+        showCancel: false,
+      })
+    }
+    else {
       if ((function () {
         for (let item of that.data.items) {
           if (item.gameid === that.data.gameId) {
@@ -179,7 +205,7 @@ Page({
           isTouchMove: false, //默认全隐藏删除
           isShow: true
         });
-        that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '添加新角色', name: that.data.gameId });
+        that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '添加新角色', name: that.data.gameId, isShow: true ,byUser:0});
         that.setData({
           arrayIndex1: 0,
           arrayIndex2: 0,
@@ -199,19 +225,35 @@ Page({
     }
 
   },
-  //删除角色
+  //长按角色
   del: function (e) {
 
     let that = this;
     let functions = [];
     functions[0] = function () {
+      wx.navigateTo({
+        url: `/pages/addlog/addlog?gameid=${that.data.items[e.currentTarget.dataset.index].gameid}`,
+        success: function(res){
+          // success
+        },
+        fail: function() {
+          // fail
+        },
+        complete: function() {
+          // complete
+        }
+      })
+      // that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '今天我爆了个荒古 好开心好开心啊啊啊啊啊啊好好好哈啊哈哈哈哈啊哈哈哈哈啊好啊好哈哈哈哈', name: that.data.items[e.currentTarget.dataset.index].gameid, isShow: true,byUser:true });
+      // that.save();
+    }
+    functions[1] = function () {
       console.log(0);
       wx.showModal({
         title: '确定重置通今日关次数吗？',
         // content: '重置后无法恢复',
         success: function (res) {
           if (res.confirm) {
-            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置今日通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid });
+            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置今日通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid, isShow: true,byUser:0 });
             that.data.items[e.currentTarget.dataset.index].dailytag = 0;
             that.save();
             //每日通关次数-1
@@ -227,23 +269,15 @@ Page({
         }
       })
     };
-    functions[1] = function () {
+    functions[2] = function () {
       console.log(1);
       wx.showModal({
         title: '确定重置本周通关次数吗？',
         // content: '重置后无法恢复',
         success: function (res) {
           if (res.confirm) {
-            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置周通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid });
+            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置周通关次数', name: that.data.items[e.currentTarget.dataset.index].gameid, isShow: true,byUser:0 });
 
-            // //每日通关次数-tag
-            // that.setData({
-            //   counter: that.data.counter-that.data.items[e.currentTarget.dataset.index].tag
-            // });
-            // wx.setStorageSync('counter', that.data.counter);
-            // //历史通关次数-tag
-            // let totalCounter = wx.getStorageSync('totalCounter') || 0;
-            // wx.setStorageSync('totalCounter', totalCounter-that.data.items[e.currentTarget.dataset.index].tag);
 
 
             that.data.items[e.currentTarget.dataset.index].tag = 0;
@@ -253,14 +287,14 @@ Page({
         }
       })
     };
-    functions[2] = function () {
+    functions[3] = function () {
       console.log(2);
       wx.showModal({
         title: '确定删除该角色吗？',
         content: '删除后无法恢复',
         success: function (res) {
           if (res.confirm) {
-            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid });
+            that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid, isShow: true,byUser:0 });
             that.data.items.splice(e.currentTarget.dataset.index, 1);
 
             that.save();
@@ -269,8 +303,9 @@ Page({
         }
       })
     };
+    // console.log(app.currentRole);
     wx.showActionSheet({
-      itemList: ['重置今日通关次数', '重置本周通关次数', '删除角色'],
+      itemList: ['添加一条角色日志', '重置今日通关次数', '重置本周通关次数', '删除角色'],
       success: function (res) {
         // console.log(res.tapIndex)
         if (res.tapIndex >= 0)
@@ -287,7 +322,7 @@ Page({
     //   content: '删除后无法恢复',
     //   success: function (res) {
     //     if (res.confirm) {
-    //       that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid });
+    //       that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '删除角色', name: that.data.items[e.currentTarget.dataset.index].gameid,isShow:true });
     //       that.data.items.splice(e.currentTarget.dataset.index, 1);
 
     //       that.save();
@@ -320,7 +355,7 @@ Page({
           for (var item of that.data.items) {
             item.tag = 0
           }
-          that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置通关次数', name: "" });
+          that.data.mylogs.unshift({ timestamp: new Date().toLocaleString(), action: '重置通关次数', name: "", isShow: true,byUser:0 });
           that.save();
         }
       }
@@ -331,14 +366,13 @@ Page({
     let totalCounter = wx.getStorageSync('totalCounter') || 0;
     wx.showModal({
       title: '提示',
-      content: `共计通关 ${totalCounter} 次`,
+      content: `共计通关 ${totalCounter} 次，共计消耗魔刹石${totalCounter*50}个`,
       showCancel: false,
     })
   },
   //picker方法
   bindPickerChange1: function (e) {
     let that = this;
-    //  console.log(e.detail.value);
     that.setData({
       arrayIndex1: e.detail.value,
       arrayIndex2: 0,
@@ -348,16 +382,11 @@ Page({
   },
   bindPickerChange2: function (e) {
     let that = this;
-    //  console.log(e.detail.value.toString());
     that.setData({
       arrayIndex2: e.detail.value,
       role: that.data.arrayIndex1.toString() + e.detail.value.toString()
     });
-    console.log(that.data.role)
-    // that.setData({
-    //   arrayIndex2: e.detail.value,
-    //   role: that.data.array2[e.detail.value]
-    // });
+
   },
   //获取search输入
   bindSearchInput: function (e) {

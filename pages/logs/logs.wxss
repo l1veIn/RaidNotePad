@@ -2,7 +2,18 @@
   padding: 20rpx;
   border-top: 1rpx solid #e5e5e5;
 }
-
+.header{
+  display: flex;
+  justify-content:space-between;
+  color:lightgray;
+  font-weight:  800;
+  font-size:   small;
+  margin-bottom:10px;
+}
+.userinfo-avatar {
+  width: 20px;height: 20px;
+  border-radius: 50%;
+}
 .logs {
   border: 1rpx solid #e0e0e0;
   border-radius: 10rpx;
@@ -34,9 +45,20 @@
 
 .action {
   display: inline-block;
-  width: 280rpx;
+  width: auto;
   color: #f40;
-  text-align: right;
+  text-align:  left;
+  word-wrap:break-word; 
+  word-break:break-all; 
+  overflow:  auto;
+}
+.action1{
+  display: inline-block;
+  width: auto;
+  font-weight: 700;
+  word-wrap:break-word; 
+  word-break:break-all; 
+  overflow:  auto;
 }
 .nolog{
   padding-top: 20px;

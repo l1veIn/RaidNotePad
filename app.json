@@ -2,7 +2,8 @@
   "pages":[
     "pages/index/index",
     "pages/logs/logs",
-    "pages/Disclaimer/Disclaimer"
+    "pages/Disclaimer/Disclaimer",
+    "pages/addlog/addlog"
 
   ],
   "window":{
@@ -19,13 +20,13 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "TODOS",
+        "text": "攻坚表",
         "iconPath": "images/home.png",
         "selectedIconPath": "images/home-actived.png"
       },
       {
         "pagePath": "pages/logs/logs",
-        "text": "LOGS",
+        "text": "日志",
         "iconPath": "images/note.png",
         "selectedIconPath": "images/note-actived.png"
       }

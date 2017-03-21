@@ -1,10 +1,27 @@
+
 <view class="container">
 
+   
+
+<view class="header">
+   <picker mode="date" value="{{date}}" start="2017-03-14" end="" bindchange="bindDateChange">
+    <view class="picker">
+       选择日期: {{date}} <image src="/images/choose.png" style=" width: 10px;height: 10px;"></image>
+    </view>
+  </picker>
+
+  <picker bindchange="bindRoleChange" value="{{roleArrayIndex}}" range="{{roleArray}}">
+   选择角色： {{roleArray[roleArrayIndex]}} <image src="/images/choose.png" style=" width: 10px;height: 10px;"></image>
+  </picker>
+  </view>
+
   <view class="logs" wx:if="{{ logs.length }}">
-    <view class="item" wx:for="{{ logs }}" wx:key="{{ index }}">
+    <view class="item" wx:for="{{ logs }}"  wx:key="{{ index }}" data-index="{{index}}" hidden="{{!item.isShow}}" catchlongtap="del" >
       <text class="timestamp">[{{ item.timestamp }}]</text>
-      <text class="name">{{ item.name }}</text>
-      <text class="action">{{ item.action }}</text>
+      <text class="name" wx:if="{{item.name!==''}}">{{ item.name }}</text>
+      <view class="{{item.byUser==1?'action1':'action'}}">
+      <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover" style="" wx:if="{{item.byUser==1}}"></image> {{ item.action }}
+      </view>
     </view>
   </view>
   <view class="nolog" wx:else>一条log都没有~</view>

@@ -1,9 +1,9 @@
 
 <!--index.wxml-->
-
+<view class= "background">
 <view class="header" >
 <icon type="search"/>
-<input class="searchInput" placeholder="输入关键字搜索" placeholder-class="placeholder" bindinput="bindSearchInput" value=""/>
+<input class="searchInput" placeholder="输入关键字筛选" placeholder-class="placeholder" bindinput="bindSearchInput" value=""/>
 </view>
 
 
@@ -37,17 +37,17 @@
       <span>请选择职业：</span> 
       <view>
         <picker bindchange="bindPickerChange1" value="{{arrayIndex1}}" range="{{array1}}">
-          {{array1[arrayIndex1]}}
+          {{array1[arrayIndex1]}} <image src="/images/choose.png" style=" width: 15px;height: 15px;"></image>
         </picker>
       </view>
       <view>
         <picker bindchange="bindPickerChange2" value="{{arrayIndex2}}" range="{{array2}}" wx:if="{{array2[arrayIndex2]}}">
-          {{array2[arrayIndex2]}}
+          {{array2[arrayIndex2]}} <image src="/images/choose.png" style=" width: 15px;height: 15px;"></image>
         </picker>
       </view>
     </view>
     <view class="idInput">
-      <label>角色名：</label>
+      <span>角色名：</span>
       <input class="inputbox" placeholder="请输入角色名或代号" placeholder-class="placeholder" bindinput="bindKeyInput" value="{{gameId}}" />
     </view>
 
@@ -62,4 +62,6 @@
   <text  catchtap="showTotalCounter" >查看历史通关次数</text>
   <navigator   url="/pages/Disclaimer/Disclaimer" hover-class="navigator-hover">免责声明</navigator >
 </view>
+</view>
+
 </view>

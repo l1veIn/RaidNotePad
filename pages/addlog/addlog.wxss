@@ -1,0 +1,18 @@
+/* pages/addlog/addlog.wxss */
+
+.section{
+  border: 1px #ccc solid;
+  margin: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  display: flex;
+
+  flex-direction: column;
+  box-shadow: 1px 1px 5px lightgrey;
+}
+
+.placeholder{
+     font-size:  medium;
+  color: lightgrey;
+  text-align:unset
+}
